@@ -1,0 +1,18 @@
+{
+  "name": "gold-buyback-prices",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "scrape": "tsx scripts/scrape.ts"
+  },
+  "dependencies": {
+    "cheerio": "^1.2.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.1",
+    "tsx": "^4.23.1",
+    "typescript": "^5.6.3"
+  }
+}
