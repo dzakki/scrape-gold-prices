@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Harga Buyback Emas</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #f7f5f2;
+    --card: #ffffff;
+    --text: #1c1a17;
+    --muted: #6b6459;
+    --border: #e5e0d8;
+    --accent: #b8860b;
+    --bad: #b3261e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #17140f;
+      --card: #211d17;
+      --text: #f2ede4;
+      --muted: #a89d8c;
+      --border: #38322a;
+      --accent: #e0b13c;
+      --bad: #ff6b60;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--bg);
+    color: var(--text);
+  }
+  main {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 0.25rem;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+  }
+  .controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+  select {
+    background: var(--card);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.9rem;
+  }
+  .store-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+  }
+  .store-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.85rem 1.1rem;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .store-header h2 {
+    font-size: 1.05rem;
+    margin: 0;
+  }
+  .store-meta {
+    font-size: 0.8rem;
+    color: var(--muted);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 0.5rem 1.1rem;
+  }
+  th {
+    color: var(--muted);
+    font-weight: 500;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  tbody tr:not(:last-child) {
+    border-bottom: 1px solid var(--border);
+  }
+  td.price {
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+    font-weight: 600;
+    color: var(--accent);
+  }
+  .error-note {
+    padding: 0.85rem 1.1rem;
+    color: var(--bad);
+    font-size: 0.85rem;
+  }
+  .empty {
+    color: var(--muted);
+    padding: 2rem 0;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Harga Buyback Emas Perhiasan</h1>
+  <p class="subtitle" id="subtitle">Memuat data&hellip;</p>
+
+  <div class="controls">
+    <label for="karat-filter">Kadar:</label>
+    <select id="karat-filter">
+      <option value="all">Semua karat</option>
+    </select>
+  </div>
+
+  <div id="stores"></div>
+</main>
+
+<script>
+  const DATA_URL = "data/gold-buyback-prices.json";
+  const rupiah = new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 });
+
+  function formatDateTime(iso) {
+    if (!iso) return "-";
+    const d = new Date(iso);
+    if (Number.isNaN(d.getTime())) return "-";
+    return new Intl.DateTimeFormat("id-ID", {
+      day: "numeric", month: "long", year: "numeric",
+      hour: "2-digit", minute: "2-digit", timeZone: "Asia/Jakarta",
+    }).format(d) + " WIB";
+  }
+
+  function render(data, selectedKarat) {
+    const storesEl = document.getElementById("stores");
+    storesEl.innerHTML = "";
+
+    const pricesByStore = new Map();
+    for (const p of data.prices) {
+      if (selectedKarat !== "all" && String(p.karat) !== selectedKarat) continue;
+      if (!pricesByStore.has(p.storeId)) pricesByStore.set(p.storeId, []);
+      pricesByStore.get(p.storeId).push(p);
+    }
+
+    let rendered = 0;
+    for (const store of data.stores) {
+      const rows = (pricesByStore.get(store.storeId) || []).sort((a, b) => (b.karat ?? 0) - (a.karat ?? 0));
+      if (store.status === "failed" && rows.length === 0) {
+        const card = document.createElement("div");
+        card.className = "store-card";
+        card.innerHTML = `
+          <div class="store-header">
+            <h2>${store.storeName}</h2>
+            <span class="store-meta">gagal diambil</span>
+          </div>
+          <div class="error-note">${store.error ?? "Tidak ada data"}</div>
+        `;
+        storesEl.appendChild(card);
+        continue;
+      }
+      if (rows.length === 0) continue;
+
+      rendered++;
+      const card = document.createElement("div");
+      card.className = "store-card";
+      const updatedAt = rows.find((r) => r.sourceUpdatedAt)?.sourceUpdatedAt ?? null;
+      card.innerHTML = `
+        <div class="store-header">
+          <h2>${store.storeName}</h2>
+          <span class="store-meta">diperbarui ${formatDateTime(updatedAt)}</span>
+        </div>
+        <table>
+          <thead>
+            <tr><th>Kadar</th><th>Kemurnian</th><th style="text-align:right">Harga Buyback / gram</th></tr>
+          </thead>
+          <tbody>
+            ${rows.map((r) => `
+              <tr>
+                <td>${r.karat !== null ? r.karat + "K" : "-"}</td>
+                <td>${r.purityPercentage !== null ? r.purityPercentage + "%" : "-"}</td>
+                <td class="price">${r.buybackPricePerGram !== null ? rupiah.format(r.buybackPricePerGram) : "-"}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+      storesEl.appendChild(card);
+    }
+
+    if (rendered === 0 && storesEl.children.length === 0) {
+      storesEl.innerHTML = '<p class="empty">Tidak ada data untuk ditampilkan.</p>';
+    }
+  }
+
+  async function init() {
+    const subtitle = document.getElementById("subtitle");
+    let data;
+    try {
+      const res = await fetch(DATA_URL, { cache: "no-store" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      data = await res.json();
+    } catch (err) {
+      subtitle.textContent = `Gagal memuat data: ${err.message}`;
+      return;
+    }
+
+    subtitle.textContent = `Diperbarui ${formatDateTime(data.generatedAt)} · ${data.prices.length} baris harga dari ${data.stores.length} toko`;
+
+    const karats = [...new Set(data.prices.map((p) => p.karat).filter((k) => k !== null))].sort((a, b) => b - a);
+    const select = document.getElementById("karat-filter");
+    for (const k of karats) {
+      const opt = document.createElement("option");
+      opt.value = String(k);
+      opt.textContent = `${k}K`;
+      select.appendChild(opt);
+    }
+    select.addEventListener("change", () => render(data, select.value));
+
+    render(data, "all");
+  }
+
+  init();
+</script>
+</body>
+</html>
