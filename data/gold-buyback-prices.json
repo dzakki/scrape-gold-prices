@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-19T03:05:29.203Z",
+  "generatedAt": "2026-09-19T05:05:29.770Z",
   "stores": [
     {
       "storeId": "iloveemas",
@@ -46,8 +46,8 @@
       "storeName": "EmasNow",
       "sourceUrl": "https://emasnow.id/",
       "status": "failed",
-      "httpStatus": null,
-      "error": "fetch failed"
+      "httpStatus": 200,
+      "error": "Harga dasar emas 24K tidak tersedia pada data sumber"
     }
   ],
   "prices": [
@@ -58,7 +58,7 @@
       "purityPercentage": 99.9,
       "buybackPricePerGram": 2276334,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -67,7 +67,7 @@
       "purityPercentage": 99,
       "buybackPricePerGram": 2266334,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -76,7 +76,7 @@
       "purityPercentage": 95.8,
       "buybackPricePerGram": 2008850,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -85,7 +85,7 @@
       "purityPercentage": 91.6,
       "buybackPricePerGram": 1920779,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -94,7 +94,7 @@
       "purityPercentage": 87.5,
       "buybackPricePerGram": 1834805,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -103,7 +103,7 @@
       "purityPercentage": 83.3,
       "buybackPricePerGram": 1746735,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -112,7 +112,7 @@
       "purityPercentage": 79.2,
       "buybackPricePerGram": 1658664,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -121,7 +121,7 @@
       "purityPercentage": 75,
       "buybackPricePerGram": 1572690,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -130,7 +130,7 @@
       "purityPercentage": 70.8,
       "buybackPricePerGram": 1484620,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -139,7 +139,7 @@
       "purityPercentage": 66.7,
       "buybackPricePerGram": 1396549,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -148,7 +148,7 @@
       "purityPercentage": 62.5,
       "buybackPricePerGram": 1310575,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -157,7 +157,7 @@
       "purityPercentage": 58.5,
       "buybackPricePerGram": 1222505,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -166,7 +166,7 @@
       "purityPercentage": 54.2,
       "buybackPricePerGram": 1134434,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -175,7 +175,7 @@
       "purityPercentage": 50,
       "buybackPricePerGram": 1048460,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -184,7 +184,7 @@
       "purityPercentage": 45.8,
       "buybackPricePerGram": 960390,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -193,7 +193,7 @@
       "purityPercentage": 41.7,
       "buybackPricePerGram": 872319,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -202,7 +202,7 @@
       "purityPercentage": 37.5,
       "buybackPricePerGram": 786345,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -211,7 +211,7 @@
       "purityPercentage": 33.3,
       "buybackPricePerGram": 698275,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -220,7 +220,7 @@
       "purityPercentage": 29.2,
       "buybackPricePerGram": 610204,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -229,7 +229,7 @@
       "purityPercentage": 25,
       "buybackPricePerGram": 524230,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -238,7 +238,7 @@
       "purityPercentage": 20.8,
       "buybackPricePerGram": 436159,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -247,7 +247,7 @@
       "purityPercentage": 16.7,
       "buybackPricePerGram": 348089,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -256,7 +256,7 @@
       "purityPercentage": 12.5,
       "buybackPricePerGram": 262115,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "iloveemas",
@@ -265,7 +265,7 @@
       "purityPercentage": 8.3,
       "buybackPricePerGram": 174044,
       "sourceUpdatedAt": "2026-09-19T02:03:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:11.037Z"
+      "scrapedAt": "2026-09-19T05:05:12.174Z"
     },
     {
       "storeId": "goemas",
@@ -274,7 +274,7 @@
       "purityPercentage": 33.3,
       "buybackPricePerGram": 598703,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -283,7 +283,7 @@
       "purityPercentage": 37.5,
       "buybackPricePerGram": 679971,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -292,7 +292,7 @@
       "purityPercentage": 41.7,
       "buybackPricePerGram": 759333,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -301,7 +301,7 @@
       "purityPercentage": 45.8,
       "buybackPricePerGram": 844410,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -310,7 +310,7 @@
       "purityPercentage": 50,
       "buybackPricePerGram": 925640,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -319,7 +319,7 @@
       "purityPercentage": 54.2,
       "buybackPricePerGram": 1010603,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -328,7 +328,7 @@
       "purityPercentage": 58.5,
       "buybackPricePerGram": 1086231,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -337,7 +337,7 @@
       "purityPercentage": 62.5,
       "buybackPricePerGram": 1163765,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -346,7 +346,7 @@
       "purityPercentage": 66.7,
       "buybackPricePerGram": 1241222,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -355,7 +355,7 @@
       "purityPercentage": 70.8,
       "buybackPricePerGram": 1318260,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -364,7 +364,7 @@
       "purityPercentage": 75,
       "buybackPricePerGram": 1396746,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -373,7 +373,7 @@
       "purityPercentage": 79.2,
       "buybackPricePerGram": 1472946,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -382,7 +382,7 @@
       "purityPercentage": 83.3,
       "buybackPricePerGram": 1551242,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -391,7 +391,7 @@
       "purityPercentage": 87.5,
       "buybackPricePerGram": 1629347,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -400,7 +400,7 @@
       "purityPercentage": 91.6,
       "buybackPricePerGram": 1705928,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -409,7 +409,7 @@
       "purityPercentage": 95.8,
       "buybackPricePerGram": 1783842,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "goemas",
@@ -418,7 +418,7 @@
       "purityPercentage": 99.9,
       "buybackPricePerGram": 2152650,
       "sourceUpdatedAt": "2026-09-18T17:00:00.000Z",
-      "scrapedAt": "2026-09-19T03:05:22.447Z"
+      "scrapedAt": "2026-09-19T05:05:23.551Z"
     },
     {
       "storeId": "baritogold",
@@ -427,7 +427,7 @@
       "purityPercentage": 99.9,
       "buybackPricePerGram": 2175000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -436,7 +436,7 @@
       "purityPercentage": 99,
       "buybackPricePerGram": 2100000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -445,7 +445,7 @@
       "purityPercentage": 95.8,
       "buybackPricePerGram": 1950000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -454,7 +454,7 @@
       "purityPercentage": 91.6,
       "buybackPricePerGram": 1870000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -463,7 +463,7 @@
       "purityPercentage": 87.5,
       "buybackPricePerGram": 1780000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -472,7 +472,7 @@
       "purityPercentage": 83.3,
       "buybackPricePerGram": 1700000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -481,7 +481,7 @@
       "purityPercentage": 79.2,
       "buybackPricePerGram": 1610000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -490,7 +490,7 @@
       "purityPercentage": 75,
       "buybackPricePerGram": 1530000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -499,7 +499,7 @@
       "purityPercentage": 70.8,
       "buybackPricePerGram": 1450000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -508,7 +508,7 @@
       "purityPercentage": 66.7,
       "buybackPricePerGram": 1375000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -517,7 +517,7 @@
       "purityPercentage": 62.5,
       "buybackPricePerGram": 1150000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -526,7 +526,7 @@
       "purityPercentage": 58.5,
       "buybackPricePerGram": 1100000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -535,7 +535,7 @@
       "purityPercentage": 54.2,
       "buybackPricePerGram": 1050000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -544,7 +544,7 @@
       "purityPercentage": 50,
       "buybackPricePerGram": 1025000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -553,7 +553,7 @@
       "purityPercentage": 45.8,
       "buybackPricePerGram": 940000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -562,7 +562,7 @@
       "purityPercentage": 41.7,
       "buybackPricePerGram": 800000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -571,7 +571,7 @@
       "purityPercentage": 37.5,
       "buybackPricePerGram": 700000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -580,7 +580,7 @@
       "purityPercentage": 33.3,
       "buybackPricePerGram": 600000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -589,7 +589,7 @@
       "purityPercentage": 29.2,
       "buybackPricePerGram": 550000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -598,7 +598,7 @@
       "purityPercentage": 25,
       "buybackPricePerGram": 500000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     },
     {
       "storeId": "baritogold",
@@ -607,7 +607,7 @@
       "purityPercentage": 20.8,
       "buybackPricePerGram": 400000,
       "sourceUpdatedAt": null,
-      "scrapedAt": "2026-09-19T03:05:25.487Z"
+      "scrapedAt": "2026-09-19T05:05:26.126Z"
     }
   ]
 }
