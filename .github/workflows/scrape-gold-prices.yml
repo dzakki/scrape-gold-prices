@@ -1,7 +1,7 @@
 name: Scrape gold buyback prices
 
 on:
-  workflow_dispatch: {}
+  workflow_dispatch: # manual trigger from GitHub UI
 
 concurrency:
   group: scrape-gold-buyback-prices
