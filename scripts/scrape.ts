@@ -180,6 +180,12 @@ async function scrapeIloveemas(): Promise<StoreResult> {
     }));
   });
 
+  if (prices.length === 0) {
+    // Works locally but not from GitHub Actions — log what the runner actually received.
+    console.warn(`[iloveemas] 0 rows; html=${result.html.length}B title="${cleanText($("title").text())}" tables=${$("table").length} harga-kami-beli=${$(".harga-kami-beli").length} #perhiasan-emas=${$("#perhiasan-emas").length}`);
+    console.warn(`[iloveemas] body: ${cleanText($("body").text()).slice(0, 400)}`);
+  }
+
   const status = statusFromRows(prices);
   return { storeId, storeName, sourceUrl, status, httpStatus: result.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
 }
