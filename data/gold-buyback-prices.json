@@ -40,14 +40,6 @@
       "status": "success",
       "httpStatus": 200,
       "error": null
-    },
-    {
-      "storeId": "emasnow",
-      "storeName": "EmasNow",
-      "sourceUrl": "https://emasnow.id/",
-      "status": "failed",
-      "httpStatus": 200,
-      "error": "Harga dasar emas 24K tidak tersedia pada data sumber"
     }
   ],
   "prices": [

@@ -188,31 +188,50 @@ async function scrapeRajaemas(): Promise<StoreResult> {
   const storeId = "rajaemas";
   const storeName = "Raja Emas Indonesia";
   const sourceUrl = "https://rajaemasindonesia.co.id/";
-  const result = await fetchPage(sourceUrl);
-  if (!result.ok || !result.html) {
-    const message = result.status === 403 ? "Diblokir oleh proteksi keamanan situs (403)" : result.error;
-    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: result.status, error: message, prices: [] };
+  // The homepage embeds the karat table as an iframe whose script loads per-region
+  // prices from published Google Sheets CSVs; the <select> option index matches the
+  // index in its `spreadsheetUrls` array. We use the Sumatera, Bali & Lombok region.
+  const widgetUrl = "https://rajaemasindonesia.co.id/wp-content/plugins/rajaemas-live-price-table/preview-demo.html";
+  const regionPattern = /sumatera/i;
+
+  const widget = await fetchPage(widgetUrl);
+  if (!widget.ok || !widget.html) {
+    const message = widget.status === 403 ? "Diblokir oleh proteksi keamanan situs (403)" : widget.error;
+    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: widget.status, error: message, prices: [] };
   }
 
-  const $ = cheerio.load(result.html);
-  const scrapedAt = new Date().toISOString();
-  const sourceUpdatedAt = parseIndonesianDate($("body").text());
+  const $ = cheerio.load(widget.html);
+  const regionIndex = $(".rei-region-select option").toArray().findIndex((el) => regionPattern.test($(el).text()));
+  const csvUrls = [...widget.html.matchAll(/https:\/\/docs\.google\.com\/spreadsheets\/[^'"\s]+output=csv/g)].map((m) => m[0]);
+  const csvUrl = regionIndex === -1 ? undefined : csvUrls[regionIndex];
+  if (!csvUrl) {
+    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: widget.status, error: "URL data harga wilayah Sumatera, Bali, Lombok tidak ditemukan", prices: [] };
+  }
 
+  await sleep(DELAY_BETWEEN_REQUESTS_MS);
+  const csv = await fetchPage(csvUrl);
+  if (!csv.ok || !csv.html) {
+    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: csv.status, error: csv.error ?? "Gagal mengambil data harga", prices: [] };
+  }
+
+  const scrapedAt = new Date().toISOString();
   const prices: GoldBuybackPrice[] = [];
-  $("table tr").each((_, el) => {
-    const cells = $(el).find("td");
-    if (cells.length < 2) return;
-    const { karat, purityPercentage } = parseKaratLabel(cleanText($(cells[0]).text()));
-    if (karat === null) return;
+  // Rows look like: K24 (99.5%),"Rp 2,124,000" — prices use commas as thousands separators.
+  for (const line of csv.html.split(/\r?\n/)) {
+    const match = line.match(/^([^,]+),\s*"?([^"]*)"?\s*$/);
+    if (!match) continue;
+    const { karat, purityPercentage } = parseKaratLabel(cleanText(match[1]));
+    if (karat === null) continue;
+    const digits = match[2].replace(/\D/g, "");
     prices.push(makeRow({
       storeId, storeName, karat, purityPercentage,
-      buybackPricePerGram: parseRupiah(cleanText($(cells[cells.length - 1]).text())),
-      sourceUpdatedAt, scrapedAt,
+      buybackPricePerGram: digits ? Number(digits) : null,
+      sourceUpdatedAt: null, scrapedAt,
     }));
-  });
+  }
 
   const status = statusFromRows(prices);
-  return { storeId, storeName, sourceUrl, status, httpStatus: result.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
+  return { storeId, storeName, sourceUrl, status, httpStatus: csv.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
 }
 
 async function scrapeQueenemas(): Promise<StoreResult> {
@@ -226,11 +245,13 @@ async function scrapeQueenemas(): Promise<StoreResult> {
 
   const $ = cheerio.load(result.html);
   const scrapedAt = new Date().toISOString();
-  const sourceUpdatedAt = parseIndonesianDate($("#daftarharga .opening-hrs p").first().text());
+  // The price table no longer shows a date, so there's no source timestamp.
+  const sourceUpdatedAt = null;
+  // Only karat rows ("24K 99.99", "23K"); bullion (ANTAM, UBS) and silver rows are skipped.
   const karatRowPattern = /^(\d{1,2})K(?:\s+([\d.]+))?$/i;
 
   const prices: GoldBuybackPrice[] = [];
-  $("#daftarharga table tbody tr").each((_, el) => {
+  $("#goldPriceTable tbody tr").each((_, el) => {
     const cells = $(el).find("td");
     if (cells.length < 2) return;
     const match = cleanText($(cells[0]).text()).match(karatRowPattern);
@@ -322,70 +343,11 @@ async function scrapeBaritogold(): Promise<StoreResult> {
   return { storeId, storeName, sourceUrl, status, httpStatus: result.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
 }
 
-async function scrapeEmasnow(): Promise<StoreResult> {
-  const storeId = "emasnow";
-  const storeName = "EmasNow";
-  const sourceUrl = "https://emasnow.id/";
-  const priceDataUrl = "https://emasnow.id/wp-content/uploads/harga-emas.json";
-
-  const pageResult = await fetchPage(sourceUrl);
-  if (!pageResult.ok || !pageResult.html) {
-    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: pageResult.status, error: pageResult.error, prices: [] };
-  }
-
-  const $ = cheerio.load(pageResult.html);
-  const karats: number[] = [];
-  $("#instaKarat option").each((_, el) => {
-    const value = Number($(el).attr("value"));
-    if (Number.isInteger(value) && value >= 1 && value <= 24) karats.push(value);
-  });
-  if (karats.length === 0) {
-    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: pageResult.status, error: "Daftar kadar karat tidak ditemukan pada halaman", prices: [] };
-  }
-
-  const dataResult = await fetchPage(priceDataUrl);
-  if (!dataResult.ok || !dataResult.html) {
-    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: dataResult.status, error: dataResult.error ?? "Gagal mengambil data harga", prices: [] };
-  }
-
-  let data: { date?: string; base_price?: { gold_24k?: number }; margin?: { perhiasan?: { insta?: { rupiah?: number; percent?: number; mode?: string } } } };
-  try {
-    data = JSON.parse(dataResult.html);
-  } catch {
-    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: dataResult.status, error: "Data harga tidak valid (bukan JSON)", prices: [] };
-  }
-
-  const base = data.base_price?.gold_24k;
-  if (typeof base !== "number" || !Number.isFinite(base)) {
-    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: dataResult.status, error: "Harga dasar emas 24K tidak tersedia pada data sumber", prices: [] };
-  }
-
-  const scrapedAt = new Date().toISOString();
-  const sourceUpdatedAt = data.date ? new Date(`${data.date}T00:00:00+07:00`).toISOString() : null;
-  const margin = data.margin?.perhiasan?.insta;
-  const rupiah = margin?.rupiah ?? 0;
-  const percent = margin?.percent ?? 0;
-  // "Insta Cash" is emasnow's instant/on-the-spot buyback tier, matching what the
-  // homepage jewelry buyback table shows (as opposed to the slower "Maxi Gold" tier).
-  const perGram24k = margin?.mode === "percent-first"
-    ? base + (base * percent) / 100 + rupiah
-    : (base + rupiah) * (1 + percent / 100);
-
-  const prices: GoldBuybackPrice[] = karats.map((karat) => makeRow({
-    storeId, storeName, karat, purityPercentage: percentageFromKarat(karat),
-    buybackPricePerGram: Math.round((perGram24k * karat) / 24),
-    sourceUpdatedAt, scrapedAt,
-  }));
-
-  const status = statusFromRows(prices);
-  return { storeId, storeName, sourceUrl, status, httpStatus: dataResult.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dihitung" : null, prices };
-}
-
 // ---------------------------------------------------------------------------
 // Orchestration
 // ---------------------------------------------------------------------------
 
-const SCRAPERS = [scrapeIloveemas, scrapeRajaemas, scrapeQueenemas, scrapeGoemas, scrapeBaritogold, scrapeEmasnow];
+const SCRAPERS = [scrapeIloveemas, scrapeRajaemas, scrapeQueenemas, scrapeGoemas, scrapeBaritogold];
 
 async function main() {
   await mkdir(DATA_DIR, { recursive: true });
