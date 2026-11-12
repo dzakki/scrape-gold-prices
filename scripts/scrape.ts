@@ -222,13 +222,14 @@ async function scrapeRajaemas(): Promise<StoreResult> {
 
   const scrapedAt = new Date().toISOString();
   const prices: GoldBuybackPrice[] = [];
-  // Rows look like: K24 (99.5%),"Rp 2,124,000" — prices use commas as thousands separators.
+  // Rows look like: K24 (99.5%),"Rp 2,124,000",,,,  — prices use commas as thousands
+  // separators and the sheet may append any number of empty trailing columns.
   for (const line of csv.html.split(/\r?\n/)) {
-    const match = line.match(/^([^,]+),\s*"?([^"]*)"?\s*$/);
+    const match = line.match(/^([^,]*),\s*(?:"([^"]*)"|([^,]*))/);
     if (!match) continue;
     const { karat, purityPercentage } = parseKaratLabel(cleanText(match[1]));
     if (karat === null) continue;
-    const digits = match[2].replace(/\D/g, "");
+    const digits = (match[2] ?? match[3] ?? "").replace(/\D/g, "");
     prices.push(makeRow({
       storeId, storeName, karat, purityPercentage,
       buybackPricePerGram: digits ? Number(digits) : null,
@@ -311,49 +312,11 @@ async function scrapeGoemas(): Promise<StoreResult> {
   return { storeId, storeName, sourceUrl, status, httpStatus: result.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
 }
 
-async function scrapeBaritogold(): Promise<StoreResult> {
-  const storeId = "baritogold";
-  const storeName = "Barito Gold";
-  const sourceUrl = "https://www.baritogold.com/harga";
-  const result = await fetchPage(sourceUrl);
-  if (!result.ok || !result.html) {
-    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: result.status, error: result.error, prices: [] };
-  }
-
-  const $ = cheerio.load(result.html);
-  const scrapedAt = new Date().toISOString();
-  const optionPattern = /kami-beli-(\d{1,2})k(?:-([\d,]+))?/i;
-
-  const prices: GoldBuybackPrice[] = [];
-  $("select#goldType option[data-price]").each((_, el) => {
-    const value = $(el).attr("value") ?? "";
-    const priceAttr = $(el).attr("data-price");
-    const match = value.match(optionPattern);
-    if (!match || !priceAttr) return;
-    const karat = Number(match[1]);
-    const purityPercentage = match[2] ? Number(match[2].replace(",", ".")) : percentageFromKarat(karat);
-    const buybackPricePerGram = Number(priceAttr);
-    prices.push(makeRow({
-      storeId, storeName,
-      karat: Number.isFinite(karat) ? karat : null,
-      purityPercentage,
-      buybackPricePerGram: Number.isFinite(buybackPricePerGram) ? buybackPricePerGram : null,
-      // The page only renders "today" via client-side JS, not a real published
-      // timestamp, so no sourceUpdatedAt is recorded.
-      sourceUpdatedAt: null,
-      scrapedAt,
-    }));
-  });
-
-  const status = statusFromRows(prices);
-  return { storeId, storeName, sourceUrl, status, httpStatus: result.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
-}
-
 // ---------------------------------------------------------------------------
 // Orchestration
 // ---------------------------------------------------------------------------
 
-const SCRAPERS = [scrapeIloveemas, scrapeRajaemas, scrapeQueenemas, scrapeGoemas, scrapeBaritogold];
+const SCRAPERS = [scrapeIloveemas, scrapeRajaemas, scrapeQueenemas, scrapeGoemas];
 
 async function main() {
   await mkdir(DATA_DIR, { recursive: true });
