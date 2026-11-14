@@ -312,11 +312,54 @@ async function scrapeGoemas(): Promise<StoreResult> {
   return { storeId, storeName, sourceUrl, status, httpStatus: result.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
 }
 
+async function scrapeNanogold(): Promise<StoreResult> {
+  const storeId = "nanogold";
+  const storeName = "Nano Gold & Silver";
+  const sourceUrl = "https://nanogold-silver.com/#harga";
+  const result = await fetchPage(sourceUrl);
+  if (!result.ok || !result.html) {
+    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: result.status, error: result.error, prices: [] };
+  }
+
+  const $ = cheerio.load(result.html);
+  const scrapedAt = new Date().toISOString();
+  // "Terakhir diperbarui: 2026-11-14 03:24:34" has no zone; values line up with
+  // business hours only when read as UTC (PHP's default), so treat it as UTC.
+  const updatedMatch = cleanText($(".buyback-tables .last-update").first().text())
+    .match(/(\d{4})-(\d{2})-(\d{2})\s+(\d{2}):(\d{2}):(\d{2})/);
+  let sourceUpdatedAt: string | null = null;
+  if (updatedMatch) {
+    const [, y, mo, d, h, mi, s] = updatedMatch.map(Number);
+    const date = new Date(Date.UTC(y, mo - 1, d, h, mi, s));
+    sourceUpdatedAt = Number.isNaN(date.getTime()) ? null : date.toISOString();
+  }
+  // Only karat rows ("24K (99,9%)", "23K"); bullion rows (LM CERTI, UBS, GOLD BAR) are skipped.
+  const karatRowPattern = /^\d{1,2}K\b/i;
+
+  const prices: GoldBuybackPrice[] = [];
+  $("#priceTable tbody tr").each((_, el) => {
+    const cells = $(el).find("td");
+    if (cells.length < 2) return;
+    const label = cleanText($(cells[0]).text());
+    if (!karatRowPattern.test(label)) return;
+    const { karat, purityPercentage } = parseKaratLabel(label);
+    if (karat === null) return;
+    prices.push(makeRow({
+      storeId, storeName, karat, purityPercentage,
+      buybackPricePerGram: parseRupiah(cleanText($(cells[1]).text())),
+      sourceUpdatedAt, scrapedAt,
+    }));
+  });
+
+  const status = statusFromRows(prices);
+  return { storeId, storeName, sourceUrl, status, httpStatus: result.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
+}
+
 // ---------------------------------------------------------------------------
 // Orchestration
 // ---------------------------------------------------------------------------
 
-const SCRAPERS = [scrapeIloveemas, scrapeRajaemas, scrapeQueenemas, scrapeGoemas];
+const SCRAPERS = [scrapeIloveemas, scrapeRajaemas, scrapeQueenemas, scrapeGoemas, scrapeNanogold];
 
 async function main() {
   await mkdir(DATA_DIR, { recursive: true });
