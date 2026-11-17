@@ -355,11 +355,71 @@ async function scrapeNanogold(): Promise<StoreResult> {
   return { storeId, storeName, sourceUrl, status, httpStatus: result.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
 }
 
+async function scrapeHaloemas(): Promise<StoreResult> {
+  const storeId = "haloemas";
+  const storeName = "Halo Emas";
+  const sourceUrl = "https://haloemas.co.id/";
+  const result = await fetchPage(sourceUrl);
+  if (!result.ok || !result.html) {
+    return { storeId, storeName, sourceUrl, status: "failed", httpStatus: result.status, error: result.error, prices: [] };
+  }
+
+  const $ = cheerio.load(result.html);
+  const scrapedAt = new Date().toISOString();
+
+  // "Harga Beli Perhiasan Emas — Last Updated : 17 November , 2026 at 09.00 (WITA)".
+  // The bullion table above it has its own "Last Updated", so anchor on the jewelry heading.
+  $("script, style").remove();
+  const updatedMatch = cleanText($("body").text())
+    .match(/Harga Beli Perhiasan Emas\s*Last Updated\s*:\s*(\d{1,2})\s+([A-Za-z]+)\s*,?\s*(\d{4})\s+at\s+(\d{1,2})[.:](\d{2})\s*\(?(WIB|WITA|WIT)?/i);
+  let sourceUpdatedAt: string | null = null;
+  if (updatedMatch) {
+    const [, day, monthName, year, hour, minute, zone] = updatedMatch;
+    // Month names may be Indonesian or English ("May", "August", "October", "December").
+    const englishOnly: Record<string, number> = { may: 4, aug: 7, oct: 9, dec: 11 };
+    const key = monthName.toLowerCase();
+    const monthIndex = INDONESIAN_MONTHS[key] ?? englishOnly[key.slice(0, 3)] ?? INDONESIAN_MONTHS[key.slice(0, 3)];
+    const utcOffset = { WIB: 7, WITA: 8, WIT: 9 }[(zone ?? "WITA").toUpperCase() as "WIB" | "WITA" | "WIT"];
+    if (monthIndex !== undefined) {
+      const date = new Date(Date.UTC(Number(year), monthIndex, Number(day), Number(hour) - utcOffset, Number(minute)));
+      sourceUpdatedAt = Number.isNaN(date.getTime()) ? null : date.toISOString();
+    }
+  }
+
+  // Jewelry prices are split over two "Kadar Karat | Harga/Gram" tables (K24–K15, K14–K5).
+  // The bullion table ("Kadar | Produk | Harga/Gram") is skipped (perhiasan only).
+  const rows: { karat: number; price: number | null }[] = [];
+  $("table").each((_, table) => {
+    const headers = $(table).find("thead th").map((__, th) => cleanText($(th).text()).toLowerCase()).get();
+    if (headers.length !== 2 || headers[0] !== "kadar karat") return;
+    $(table).find("tbody tr").each((__, tr) => {
+      const cells = $(tr).find("td");
+      if (cells.length < 2) return;
+      const { karat } = parseKaratLabel(cleanText($(cells[0]).text()));
+      if (karat === null) return;
+      rows.push({ karat, price: parseRupiah(cleanText($(cells[1]).text())) });
+    });
+  });
+
+  // The site lists several unlabeled K24 rows at different prices; since it doesn't say
+  // which fineness each one is, leave purity unknown for any karat that appears twice.
+  const karatCounts = new Map<number, number>();
+  for (const r of rows) karatCounts.set(r.karat, (karatCounts.get(r.karat) ?? 0) + 1);
+  const prices = rows.map((r) => makeRow({
+    storeId, storeName, karat: r.karat,
+    purityPercentage: karatCounts.get(r.karat) === 1 ? percentageFromKarat(r.karat) : null,
+    buybackPricePerGram: r.price, sourceUpdatedAt, scrapedAt,
+  }));
+
+  const status = statusFromRows(prices);
+  return { storeId, storeName, sourceUrl, status, httpStatus: result.status, error: status === "failed" ? "Tidak ada baris harga yang berhasil dibaca" : null, prices };
+}
+
 // ---------------------------------------------------------------------------
 // Orchestration
 // ---------------------------------------------------------------------------
 
-const SCRAPERS = [scrapeIloveemas, scrapeRajaemas, scrapeQueenemas, scrapeGoemas, scrapeNanogold];
+const SCRAPERS = [scrapeIloveemas, scrapeRajaemas, scrapeQueenemas, scrapeGoemas, scrapeNanogold, scrapeHaloemas];
 
 async function main() {
   await mkdir(DATA_DIR, { recursive: true });
